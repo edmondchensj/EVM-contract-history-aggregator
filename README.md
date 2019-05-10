@@ -8,7 +8,7 @@ Input: A list of lists
 
 Output: A dict of dicts of dict, where: <br>
 * first level keys are source nodes, 
-* second level keys are the destination nodes,
+* second level keys are destination nodes,
 * third level key is a fixed string ('constraint'),
 * third level value is the subgraph of paths that the specific edge allows (a dict of dicts)<sup>1</sup>. <br>
 
@@ -16,7 +16,7 @@ Output: A dict of dicts of dict, where: <br>
 
 
 ## Examples
-### 1) Two inputs; multiple, non-consecutive branches
+### 1) Two inputs; multiple, non-consecutive branches; no loops
 Input: 
 ```
 [[1, 2, 4, 5, 7, 8], 
@@ -37,7 +37,7 @@ Output:
  <img src="examples/output_1.png" width="70%">
 
 
-### 2) Five inputs; multiple branches with consecutive branching (nodes 1,3,4)
+### 2) Five inputs; multiple branches with consecutive branching (nodes 1,3,4); no loops
 Input:
 ```
 [[1, 2, 4, 5, 7, 8],
