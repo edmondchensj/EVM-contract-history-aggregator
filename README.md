@@ -14,14 +14,16 @@ Output: A dict of dicts of dict, where:
 
 
 ### Example 
-Input: *[[1, 2, 4, 5, 7, 8], [1, 3, 4, 6, 7, 9]]*
+Input: 
+`[[1, 2, 4, 5, 7, 8], [1, 3, 4, 6, 7, 9]]`
 
 Output: 
-* 
+`
 {1: {2: {'constraint': {}}, 3: {'constraint': {}}},
  2: {4: {'constraint': {}}},
  3: {4: {'constraint': {}}},
  4: {5: {'constraint': {1: {2}}}, 6: {'constraint': {1: {3}}}},
  5: {7: {'constraint': {}}},
  6: {7: {'constraint': {}}},
- 7: {8: {'constraint': {1: {2}, 4: {5}}}, 9: {'constraint': {1: {3}, 4: {6}}}}}*
+ 7: {8: {'constraint': {1: {2}, 4: {5}}}, 9: {'constraint': {1: {3}, 4: {6}}}}}
+ `
