@@ -34,7 +34,7 @@ Output:
  6: {7: {'constraint': {}}},
  7: {8: {'constraint': {1: {2}, 4: {5}}}, 9: {'constraint': {1: {3}, 4: {6}}}}}
  ```
- <img src="examples/output_1.png" width="40%">
+ <img src="examples/output_1.png" width="70%">
 
 
 ### 2) Five inputs; multiple branches with consecutive branching (nodes 1,3,4)
@@ -64,4 +64,4 @@ Output:
  10: {7: {'constraint': {}}},
  11: {4: {'constraint': {}}}}
 ```
-<img src="examples/output_2.png" width="40%">
+<img src="examples/output_2.png" width="70%">
