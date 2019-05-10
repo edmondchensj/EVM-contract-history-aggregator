@@ -7,10 +7,10 @@ The graph aggregator takes in a list of execution paths (in terms of program cou
 Input: A list of lists
 
 Output: A dict of dicts of dict, where: <br>
-    first level keys are source nodes,  <br>
-    second level keys are the destination nodes, <br>
-    third level key is a fixed string ('constraint'), <br>
-    third level value is the subgraph of paths that the specific (source, destination) edge allows (a dict of dicts).  
+    * first level keys are source nodes, 
+    * second level keys are the destination nodes,
+    * third level key is a fixed string ('constraint'),
+    * third level value is the subgraph of paths that the specific (source, destination) edge allows (a dict of dicts).  
 
 
 ### Example 
