@@ -4,6 +4,8 @@ import copy
 class GraphAggregator(object):
 
     def __init__(self):
+        """ Initialize graphs. 
+        Backup graph is used in make_graph() and update_old_branches(). """
         self.G = dict()
         self.G_backup = dict()
 
@@ -17,7 +19,6 @@ class GraphAggregator(object):
                 self.add_all_edges(path)
 
             else:
-                # Initialize path constraints
                 constraint = {}
 
                 for (source, dest) in zip(path, path[1:]): 
@@ -30,16 +31,13 @@ class GraphAggregator(object):
                     # i.e. has more than one destination node 
                     if len(self.G[source]) >= 2: 
 
-                        # If constraint exist, add to edge
+                        # If path constraints exist, add to edge
                         if len(constraint) >= 1:
 
-                            # Update path with constraint
-                            self.update_constraint(source, dest, constraint)
-
-                            # Update old branches
+                            self.update_edge_constraint(source, dest, constraint)
                             self.update_old_branches(source, constraint)
 
-                        # Add branch to path constraint
+                        # Add this edge to path constraints
                         constraint.update({source: {dest}})
 
             # Once path fully added, update backup copy of Graph
@@ -52,16 +50,22 @@ class GraphAggregator(object):
                 input("Press Enter to continue.\n")
 
     def update_old_branches(self, source, constraint):
+        """ For each branch of a given source node, 
+        find branches that currently have no constraints and 
+        update its constraints based on constraints of a new path """
         for dest in self.G_backup[source]:
-            for source_con, dest_con in constraint.items():
-                # Check if constraint already exists in original graph 
-                if source_con in self.G_backup[source][dest]['constraint']:
-                    # If constraint for already exists, no need to update
+            for source_con, dest_con_set in constraint.items():
+                # Skip if branch already has constraints
+                if (source_con in self.G_backup[source][dest]['constraint']):
+                    pass
+                # Skip if constraint directly leads to the branching node
+                elif (source in dest_con_set):
                     pass
                 else: # Otherwise, update new graph with new constraints
                     self.G[source][dest]['constraint'].update({source_con: set(self.G_backup[source_con].keys())})
 
-    def update_constraint(self, source, dest, constraint):
+    def update_edge_constraint(self, source, dest, constraint):
+        """ Update constraint for a given (source, dest) edge """
         for k, v in constraint.items():
             if k in self.G[source][dest]['constraint']:
                 self.G[source][dest]['constraint'][k].update(v)
@@ -90,6 +94,9 @@ def main(inputs):
     G.make_graph(inputs, view_progress=True)
 
 if __name__ == "__main__":
-    inputs = [[1,2,4,5,7,8],
-                [1,3,4,6,7,9]]
-    main(inputs)
+    test_inputs = [[1,2,4,5,7,8],
+                [1,3,4,6,7,9],
+                [1,3,4,5,7,8],
+                [1,3,4,10,7,9],
+                [1,3,11,4,10]]
+    main(test_inputs)
