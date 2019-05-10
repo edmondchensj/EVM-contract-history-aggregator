@@ -85,6 +85,9 @@ class GraphAggregator(object):
     def has_edge(self, source, dest):
         return (source in self.G and dest in self.G[source])
 
+    def get_graph(self):
+        return self.G
+
 def main(inputs):
     print('Inputs: ')
     pprint(inputs)
@@ -92,6 +95,10 @@ def main(inputs):
 
     G = GraphAggregator()
     G.make_graph(inputs, view_progress=True)
+    graph = G.get_graph()
+
+    print('Final Graph: ')
+    pprint(graph)
 
 if __name__ == "__main__":
     test_inputs = [[1,2,4,5,7,8],
