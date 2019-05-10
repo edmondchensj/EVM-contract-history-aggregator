@@ -15,8 +15,8 @@ Output: A dict of dicts of dict, where: <br>
 <sup>1</sup>*Note: If a node does not exist as a key in the subgraph dict, all branches from that node are permitted paths. In addition, constraints are not added to non-branching edges since restrictions would be applied to earlier branching edges.* 
 
 
-### Examples
-#### 1) Two inputs; multiple, non-consecutive branches
+## Examples
+### 1) Two inputs; multiple, non-consecutive branches
 Input: 
 ```
 [[1, 2, 4, 5, 7, 8], 
@@ -34,7 +34,7 @@ Output:
  7: {8: {'constraint': {1: {2}, 4: {5}}}, 9: {'constraint': {1: {3}, 4: {6}}}}}
  ```
 
-#### 2) Five inputs; multiple branches with consecutive (1,3,4)
+### 2) Five inputs; multiple branches with consecutive (1,3,4)
 Input:
 ```
 [[1, 2, 4, 5, 7, 8],
