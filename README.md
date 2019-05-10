@@ -22,7 +22,7 @@ Input:
 [[1, 2, 4, 5, 7, 8], 
 [1, 3, 4, 6, 7, 9]]
 ```
-![input-1|20%](examples/input_1.png)
+![input-1|20%](examples/input_1.png) <!-- .element height="50%" width="50%" -->
 
 Output: 
 ```
@@ -34,7 +34,7 @@ Output:
  6: {7: {'constraint': {}}},
  7: {8: {'constraint': {1: {2}, 4: {5}}}, 9: {'constraint': {1: {3}, 4: {6}}}}}
  ```
-![output-1|20%](examples/output_1.png)
+![output-1|20%](examples/output_1.png) <!-- .element height="50%" width="50%" -->
 
 
 ### 2) Five inputs; multiple branches with consecutive branching (nodes 1,3,4)
