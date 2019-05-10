@@ -10,7 +10,9 @@ Output: A dict of dicts of dict, where: <br>
 * first level keys are source nodes, 
 * second level keys are the destination nodes,
 * third level key is a fixed string ('constraint'),
-* third level value is the subgraph of paths that the specific (source, destination) edge allows (a dict of dicts).  
+* third level value is the subgraph of paths that the specific (source, destination) edge allows (a dict of dicts)<sup>1</sup>. <br>
+
+<sup>1</sup>*There are two cases to note: first, non-branching edges (i.e. its source node only has one destination node) are not tagged with constraints because it would be trivial. Second, if constraint for a branching edge is empty, all paths leading to that edge are permitted.* 
 
 
 ### Example 
