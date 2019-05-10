@@ -1,5 +1,4 @@
 from pprint import pprint
-from collections import defaultdict
 import copy
 
 class GraphAggregator(object):
@@ -21,7 +20,7 @@ class GraphAggregator(object):
                 # Initialize path constraints
                 constraint = {}
 
-                for (source, dest) in path: 
+                for (source, dest) in zip(path, path[1:]): 
 
                     # Add edge to graph if it is new
                     if not self.has_edge(source, dest):
@@ -53,16 +52,13 @@ class GraphAggregator(object):
                 input("Press Enter to continue.\n")
 
     def update_old_branches(self, source, constraint):
-        # Initialize variable to track new constraints for other branches
-        constraint_otherBr = {}
-
         for dest in self.G_backup[source]:
             for source_con, dest_con in constraint.items():
-                # Check if constraint already exists
+                # Check if constraint already exists in original graph 
                 if source_con in self.G_backup[source][dest]['constraint']:
                     # If constraint for already exists, no need to update
                     pass
-                else: # Otherwise, Add all old paths to constraint
+                else: # Otherwise, update new graph with new constraints
                     self.G[source][dest]['constraint'].update({source_con: set(self.G_backup[source_con].keys())})
 
     def update_constraint(self, source, dest, constraint):
@@ -72,8 +68,8 @@ class GraphAggregator(object):
             else:
                 self.G[source][dest]['constraint'].update({k: v})
 
-    def add_all_edges(self, list_of_edges):
-        for (source, dest) in list_of_edges:
+    def add_all_edges(self, path):
+        for (source, dest) in zip(path, path[1:]):
             self.add_edge(source, dest)
 
     def add_edge(self, source, dest):
@@ -94,6 +90,6 @@ def main(inputs):
     G.make_graph(inputs, view_progress=True)
 
 if __name__ == "__main__":
-    inputs = [[(1,2),(2,4),(4,5),(5,7),(7,8)],
-            [(1,3),(3,4),(4,6),(6,7),(7,9)]]
+    inputs = [[1,2,4,5,7,8],
+                [1,3,4,6,7,9]]
     main(inputs)
