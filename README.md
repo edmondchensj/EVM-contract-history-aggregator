@@ -12,8 +12,7 @@ Output: A dict of dicts of dict, where: <br>
 * third level key is a fixed string ('constraint'),
 * third level value is the subgraph of paths that the specific edge allows (a dict of dicts)<sup>1</sup>. <br>
 
-<sup>1</sup>*Note: If a node does not exist as a key in the subgraph dict, all branches from that node are permitted paths. In addition, constraints are not added to non-branching edges since restrictions would be applied to earlier branching edges.* 
-
+<sup>1</sup>*Note: If a node does not exist as a key in the subgraph dict, all branches from that node are permitted paths. In addition, constraints are not added to non-branching edges since restrictions would be applied to earlier branching edges.*
 
 ## Examples
 ### 1) Two inputs; multiple, non-consecutive branches; no loops
@@ -34,7 +33,7 @@ Output:
  6: {7: {'constraint': {}}},
  7: {8: {'constraint': {1: {2}, 4: {5}}}, 9: {'constraint': {1: {3}, 4: {6}}}}}
  ```
- <img src="examples/output_1.png" width="70%">
+ <img src="examples/output_1.png" width="50%">
 
 
 ### 2) Five inputs; multiple branches with consecutive branching (nodes 1,3,4); no loops
@@ -64,4 +63,23 @@ Output:
  10: {7: {'constraint': {}}},
  11: {4: {'constraint': {}}}}
 ```
-<img src="examples/output_2.png" width="70%">
+<img src="examples/output_2.png" width="50%">
+
+
+## Preprocessing (preprocess.py)
+The algorithm assumes that paths do not contain no-loops. In order to generalize the algorithm to paths with loops, users can run preprocessing script to first "flatten" their input paths. This turns paths with loops into the no-loop versions.
+
+### Example
+Input: 
+```
+[[1,2,3,4,2,3,4,5,7,8,5,6,8,9]]
+```
+<img src="examples/preprocess_input.png" width="40%">
+
+Output:
+```
+[[1, 2, 3, 4, 2], 
+[1, 2, 3, 4, 5, 7, 8, 5], 
+[1, 2, 3, 4, 5, 6, 8, 9]]
+```
+<img src="examples/preprocess_output.png" width="40%">
