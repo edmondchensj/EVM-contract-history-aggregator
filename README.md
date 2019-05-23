@@ -9,7 +9,7 @@ This repo contains two groups of scripts:
     * preprocessing.py: To run before GraphAggregator.py for preprocessing input paths
     * visualization.py: To run after GraphAggregator.py for visualizing the graph
 
-The purpose of the historical table is to aggregate important information in all historical traces, specifically the execution paths (in terms of program counters) and the memory and storage read dependencies for each path. With this table, we would be able to detect whether a new execution path is normal or an anomaly. This achieves the big picture goal for the EVM project.
+The purpose of the historical table is to aggregate important information in all historical traces. It contains the execution paths (in terms of program counters) and the memory and storage read dependencies for each path. With this table, we would be able to detect whether a new execution path is normal or an anomaly. This achieves the big picture goal for the EVM project.
 
 The purpose of graph aggregator is to create a single directed graph per contract such that we obtain a snapshot of all historical execution paths for each contract. This is helpful for analyzing case studies.
 
@@ -151,5 +151,5 @@ Input
  10: {7: {'constraint': {}}},
  11: {4: {'constraint': {}}}}
 ```
-Output:
+Output: <br>
 <img src="examples/graph_visualization.png" width="40%">
