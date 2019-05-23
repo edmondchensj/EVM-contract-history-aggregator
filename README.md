@@ -1,4 +1,5 @@
-# EVM-graph-aggregator
+# Historical Table and Graph Aggregator for EVM Project 
+This repo is the final component of the Anomaly-based Detector for Northwestern University's EECS450 Final Project. 
 
 ## Overview 
 This repo contains two groups of scripts:
