@@ -45,8 +45,8 @@ Input:
 
 Output: (Single Entry)
 ```
-{(0, 11, 170, 340, 427, 557, 558, 199): {'mrd': {455: [[4]]},
-                                         'srd': {1296: [[(1818, 'self')]]}}}
+{(0, 11, 170, 340, 427, 557, 558, 199): {'mrd_possibilities': {455: [[4]]},
+                                         'srd_possibilities': {1296: [[(1818, 'self')]]}}}
 ```
 
 ## Graph Aggregator (GraphAggregator.py)

@@ -18,14 +18,15 @@ class HistoricalTable(object):
                 path = self.get_trace_path(trace)
                 path_key = tuple(path) # make immutable 
                 if path_key not in self.table.keys():
-                    self.table[path_key] = {'mrd':{},'srd':{}}
+                    self.table[path_key] = {'mrd_possibilities':{},
+                                        'srd_possibilities':{}}
 
                 # Update MRD
                 if trace['mrd'] is not None:
                     for mrd in trace['mrd']:
                         mrd_key = mrd['reader']['pc']
                         mrd_val = [w['pc'] for w in mrd['writers']]
-                        self.update_table(path_key, 'mrd', mrd_key, mrd_val)
+                        self.update_table(path_key, 'mrd_possibilities', mrd_key, mrd_val)
 
 
                 # Update SRD
@@ -35,7 +36,7 @@ class HistoricalTable(object):
                         writer_pcs = [w['pc'] for w in srd['writers']]
                         relations = self.get_cti_relation(srd)
                         srd_val = [(pc, r) for pc, r in zip(writer_pcs, relations)]
-                        self.update_table(path_key, 'srd', srd_key, srd_val)
+                        self.update_table(path_key, 'srd_possibilities', srd_key, srd_val)
 
     def update_table(self, path_key, table, table_key, table_val):
         try: 
@@ -76,7 +77,7 @@ class HistoricalTable(object):
         return self.table
 
 def main():
-    with open('tracelist.json', 'r') as f:
+    with open('examples/tracelist.json', 'r') as f:
         input_json = json.load(f)
 
     print("Input json is: ")
