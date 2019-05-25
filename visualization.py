@@ -30,21 +30,21 @@ def getGraph(output):
 			if sub_key not in nodes:
 				nodes.append(str(sub_key))
 			
-	for key in  output.keys():
-		for sub_key in output[key].keys():
-			if output[key][sub_key]['constraint']:
+	# for key in  output.keys():
+	# 	for sub_key in output[key].keys():
+	# 		if output[key][sub_key]['constraint']:
 
-				dot.node(str(sub_key), str(sub_key), xlabel=str(output[key][sub_key]['constraint']))
-				nodes.remove(str(sub_key))
+	# 			dot.node(str(sub_key), str(sub_key), xlabel=str(output[key][sub_key]['constraint']))
+	# 			nodes.remove(str(sub_key))
 
 	for i in nodes:
 		dot.node(i, i)
 	for key in output.keys():
 		for sub_key in output[key].keys():
-			# if output[key][sub_key]['constraint']:
-			dot.edge(str(key),str(sub_key), constraint='true')
-			# else:
-			# 	dot.edge(str(key),str(sub_key), constraint='false')
+			if output[key][sub_key]['constraint']:
+				dot.edge(str(key),str(sub_key), constraint='true', label=str(output[key][sub_key]['constraint']))
+			else:
+				dot.edge(str(key),str(sub_key), constraint='true')
 
 
 	dot.render('test-output/graph-aggregator.gv', view=True)  
