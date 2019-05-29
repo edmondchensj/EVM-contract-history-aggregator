@@ -24,18 +24,13 @@ class HistoricalTable(object):
 
                 # Update MRD
                 if trace['mrd'] is not None:
-                    for mrd in trace['mrd']:
-                        mrd_key, mrd_val = self.get_dependencies(trace, 'mrd')
-                        self.update_table(path_key, 'mrd_possibilities', mrd_key, mrd_val)
-
+                    self.get_dependencies(trace, 'mrd', path_key)
 
                 # Update SRD
                 if trace['srd'] is not None:
-                    for srd in trace['srd']:
-                        srd_key, srd_val = self.get_dependencies(trace, 'srd')
-                        self.update_table(path_key, 'srd_possibilities', srd_key, srd_val)
+                    self.get_dependencies(trace, 'srd', path_key)
 
-    def get_dependencies(self, trace, dep_type):
+    def get_dependencies(self, trace, dep_type, path_key=None):
         for dep in trace[dep_type]:
             dep_key = dep['reader']['pc']
 
@@ -46,7 +41,7 @@ class HistoricalTable(object):
                 relations = self.get_cti_relation(dep)
                 dep_val = [(pc, r) for pc, r in zip(writer_pcs, relations)]
 
-            return dep_key, dep_val
+            self.update_table(path_key, f'{dep_type}_possibilities', dep_key, dep_val)
 
     def update_table(self, path_key, table, table_key, table_val):
         try: 
@@ -59,9 +54,7 @@ class HistoricalTable(object):
 
     def get_cti_relation(self, srd):
         """ Compare ctis between reader and writers and determine relationship 
-
         e.g. [] is parent of [0] and [1], [0,1] is child of [0]. 
-
         Grandparents are considered parents. Similarly grandchildren are considered children. 
         """
         reader_cti = srd['reader']['cti']
