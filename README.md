@@ -57,6 +57,7 @@ Given a trace, the script extracts the path, preprocesses it to no-loop paths, a
 
 ### Format
 Input: dict 
+
 Output: list of dicts
 
 ### Example
