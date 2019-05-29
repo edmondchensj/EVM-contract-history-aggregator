@@ -133,7 +133,7 @@ class TraceInfo(object):
         return new_paths
 
 def main():
-    with open('examples/tracelist_withLoops.json', 'r') as f:
+    with open('samples/tracelist_withLoops.json', 'r') as f:
         input_json = json.load(f)
 
     trace_dict = input_json[0][0]

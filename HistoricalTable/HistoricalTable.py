@@ -86,7 +86,7 @@ class HistoricalTable(object):
         return self.table
 
 def main():
-    with open('examples/tracelist.json', 'r') as f:
+    with open('samples/tracelist.json', 'r') as f:
         input_json = json.load(f)
 
     print("Input json is: ")
