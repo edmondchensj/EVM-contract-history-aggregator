@@ -4,7 +4,8 @@ This repo is the final component of the Anomaly-based Detector for Northwestern 
 ## Overview 
 This repo contains two groups of scripts:
 1. Historical Table
-    * HistoricalTable.py: Main script for aggregating historical traces.
+    * HistoricalTable.py: Main script for storing execution paths and dependencies of historical traces.
+    * TraceInfo.py: Helper script for extracting the execution path and dependencies for a given trace. 
 2. Graph Aggregator 
     * GraphAggregator.py: To aggregate list of paths into a single directed graph
     * preprocessing.py: To run before GraphAggregator.py for preprocessing input paths
@@ -47,6 +48,41 @@ Output: (Single Entry)
 ```
 {(0, 11, 170, 340, 427, 557, 558, 199): {'mrd_possibilities': {455: [[4]]},
                                          'srd_possibilities': {1296: [[(1818, 'self')]]}}}
+```
+
+## Trace Information Extraction (TraceInfo.py)
+This is a helper script for extracting the exection path and dependencies for a given trace, allowing the user to then check if these information has been previously recorded in the Historical Table. 
+
+Given a trace, the script extracts the path, preprocesses it to no-loop paths, and assigns dependencies. 
+
+### Format
+Input: dict 
+Output: list of dicts
+
+### Example
+Input:
+```
+{'address': '0xcac7000c7dbaa2e33af15325af5d435e011c7bdd',
+ 'cti': [],
+ 'mrd': [{'reader': {'nonce': 66, 'op': 'MLOAD', 'pc': 455},
+          'writers': [{'nonce': 3, 'op': 'MSTORE', 'pc': 4}]}],
+ 'path': [[1, 0],
+          [8, 11],
+          [18, 170],
+          [39, 340],
+          [60, 444],
+          [111, 11],
+          [112, 558],
+          [117, 199]],
+ 'srd': [{'reader': {'cti': [], 'nonce': 122, 'pc': 1296},
+          'writers': [{'cti': [], 'nonce': 115, 'pc': 1818}]}],
+ 'success': True}
+```
+
+Output:
+```
+[{'mrd': {455: [4]}, 'path': [0, 11, 170, 340, 444, 11], 'srd': {}},
+ {'mrd': {}, 'path': [0, 11, 558, 199], 'srd': {1296: [(1818, 'self')]}}]
 ```
 
 ## Graph Aggregator (GraphAggregator.py)
