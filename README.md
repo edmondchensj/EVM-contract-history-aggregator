@@ -4,8 +4,9 @@ This repo is the final component of the Anomaly-based Detector for Northwestern 
 ## Overview 
 This repo contains two groups of scripts:
 1. Historical Table
-    * HistoricalTable.py: Main script for storing execution paths and dependencies of historical traces.
-    * TraceInfo.py: Helper script for extracting the execution path and dependencies for a given trace. 
+    * makeDatabase.py: Main script to generate the Historical-Table database
+    * HistoricalTable.py: Contains class for generating database with paths and dependencies.
+    * TraceInfo.py: Contains helper class for extracting the execution path and dependencies for a given trace. 
 2. Graph Aggregator 
     * GraphAggregator.py: To aggregate list of paths into a single directed graph
     * preprocessing.py: To run before GraphAggregator.py for preprocessing input paths
@@ -16,10 +17,10 @@ The purpose of the historical table is to aggregate important information in all
 The purpose of graph aggregator is to create a single directed graph per contract such that we obtain a snapshot of all historical execution paths for each contract. This is helpful for analyzing case studies.
 
 ## Historical Table (HistoricalTable.py)
-The historical table takes in a json file of traces and updates its database.
+The historical table takes in the output from TraceInfo.py and updates its database.
 
 ### Format
-Input: A json file
+Input: Output (list of dict) of TraceInfo.py (see below)
 
 Output: A dict of dicts, where: <br>
 * first level keys are the execution paths as tuples,
@@ -29,36 +30,31 @@ Output: A dict of dicts, where: <br>
 ### Example
 Input: 
 ```
-[
-  [
-    {
-      "cti": [],
-      "address": "0xcac7000c7dbaa2e33af15325af5d435e011c7bdd",
-      "success": true,
-      "path": [[1,0],[8,11],[18,170],[39,340],[60,427],[111,557],[112,558],[117,199]],
-      "mrd": [{"reader":{"nonce":66,"pc":455,"op":"MLOAD"},"writers":[{"nonce":3,"pc":4,"op":"MSTORE"}]}],
-      "srd": [{"reader":{"cti":[],"nonce":122,"pc":1296},"writers":[{"cti":[],"nonce":115,"pc":1818}]}]
-    }
-  ]
-]
-
+[{'mrd': {455: [4]}, 
+  'path': '0, 11, 170, 340, 444, 11', 
+  'srd': {}},
+ {'mrd': {}, 
+ 'path': '0, 11, 558, 199', 
+ 'srd': {1296: [(1818, 'self')]}}]
 ```
 
 Output: (Single Entry)
 ```
-{(0, 11, 170, 340, 427, 557, 558, 199): {'mrd_possibilities': {455: [4]},
-                                         'srd_possibilities': {1296: [(1818, 'self')]}}}
+{'0, 11, 170, 340, 444, 11': {'mrd_possibilities': {455: [[4]]},
+                              'srd_possibilities': {}},
+ '0, 11, 558, 199': {'mrd_possibilities': {},
+                     'srd_possibilities': {1296: [[(1818, 'self')]]}}}
 ```
 
 ## Trace Information Extraction (TraceInfo.py)
-This is a helper script for extracting the exection path and dependencies for a given trace, allowing the user to then check if these information has been previously recorded in the Historical Table. 
+This is a helper script for extracting the exection path and dependencies for a given trace.
 
 Given a trace, the script extracts the path, preprocesses it to no-loop paths, and assigns dependencies. 
 
 ### Format
 Input: dict 
 
-Output: list of dicts
+Output: list of dicts or None (if 'success' is False)
 
 ### Example
 Input:
@@ -80,10 +76,14 @@ Input:
  'success': True}
 ```
 
-Output:
+Output: 
 ```
-[{'mrd': {455: [4]}, 'path': [0, 11, 170, 340, 444, 11], 'srd': {}},
- {'mrd': {}, 'path': [0, 11, 558, 199], 'srd': {1296: [(1818, 'self')]}}]
+[{'mrd': {455: [4]}, 
+  'path': '0, 11, 170, 340, 444, 11', 
+  'srd': {}},
+ {'mrd': {}, 
+ 'path': '0, 11, 558, 199', 
+ 'srd': {1296: [(1818, 'self')]}}]
 ```
 
 ## Graph Aggregator (GraphAggregator.py)
