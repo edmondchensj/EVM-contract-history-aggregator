@@ -1,6 +1,9 @@
 # Historical Table and Graph Aggregator for EVM Project 
 This repo is the final component of the Anomaly-based Detector for Northwestern University's EECS450 Final Project. 
 
+## Code Execution
+<img src="examples/code_execution.png" width="60%">
+
 ## Overview 
 This repo contains two groups of scripts:
 1. Historical Table
@@ -15,6 +18,7 @@ This repo contains two groups of scripts:
 The purpose of the historical table is to aggregate important information in all historical traces. It contains the execution paths (in terms of program counters) and the memory and storage read dependencies for each path. With this table, we would be able to detect whether a new execution path is normal or an anomaly. This achieves the big picture goal for the EVM project.
 
 The purpose of graph aggregator is to create a single directed graph per contract such that we obtain a snapshot of all historical execution paths for each contract. This is helpful for analyzing case studies.
+
 
 ## Historical Table (HistoricalTable.py)
 The historical table takes in the output from TraceInfo.py and updates its database.
