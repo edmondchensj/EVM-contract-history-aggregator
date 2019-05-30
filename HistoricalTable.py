@@ -45,7 +45,7 @@ class HistoricalTable(object):
             else: 
                 self.table[path_key][table][table_key].append(table_val)
         except KeyError: # New entry to table
-            self.table[path_key][table][table_key] = [table_val]
+            self.table[path_key][table][table_key] = table_val
 
     def get_cti_relation(self, srd):
         reader_cti = srd['reader']['cti']
@@ -89,6 +89,20 @@ def main():
 
     print("Historical Table is: ")
     pprint(table)
+    
+    for key in table.keys():
+      if type(key) is not str:
+        try:
+          table[str(key)] = table[key]
+        except:
+          try:
+            table[repr(key)] = table[key]
+          except:
+            pass
+        del table[key]
+
+    with open('result.json','w') as fp:
+        json.dump(table, fp)
 
 if __name__ == "__main__":
     main()
