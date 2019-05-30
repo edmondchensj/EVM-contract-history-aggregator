@@ -1,5 +1,6 @@
 import json
 from pprint import pprint
+from tqdm import tqdm # for tracking progress
 
 class TraceInfo(object):
 
@@ -14,12 +15,13 @@ class TraceInfo(object):
         Argument:
             trace -- a dict
         Returns: 
-            list of dicts  
+            list of dicts
+            (None for failed traces)
         """
 
         # Ignore failures
         if trace["success"] == False:
-            return 
+            return None
 
         full_path = trace['path']
         subpaths = self.preprocess_with_nonce(full_path) # convert path into multiple no-loop paths
@@ -29,7 +31,11 @@ class TraceInfo(object):
 
         # Loop through path to get dependencies
         for i, path_with_nonce in enumerate(subpaths):
-            path_info = {'path': [path_tuple[1] for path_tuple in path_with_nonce],
+            # Initialize path keys
+            # Convert to string for json compatibility later. 
+            path_as_list = [path_tuple[1] for path_tuple in path_with_nonce]
+            path_key = ', '.join(str(x) for x in path_as_list)
+            path_info = {'path': path_key,
                     'mrd': None,
                     'srd': None}
 
@@ -73,30 +79,31 @@ class TraceInfo(object):
         """
         dependencies = {}
 
-        for dep in trace[dep_type]:
-            # Skip dependencies that should not be allocated to this subpath
-            # with exception for final subpath
-            if dep['reader']['nonce'] >= max_nonce and not final_subpath:
-                continue
+        if trace[dep_type] is not None:
+            for dep in trace[dep_type]:
+                # Skip dependencies that should not be allocated to this subpath
+                # with exception for final subpath
+                if dep['reader']['nonce'] >= max_nonce and not final_subpath:
+                    continue
 
-            # Get key (reader pc)
-            key = dep['reader']['pc']
+                # Get key (reader pc)
+                key = dep['reader']['pc']
 
-            # Skip dependencies that have been assigned
-            if key in self.visited_keys[dep_type]:
-                continue
-            else:
-                self.visited_keys[dep_type].append(key)
+                # Skip dependencies that have been assigned
+                if key in self.visited_keys[dep_type]:
+                    continue
+                else:
+                    self.visited_keys[dep_type].append(key)
 
-            # Get value (writer pc and cti relation if applicable)
-            writer_pcs =[w['pc'] for w in dep['writers']]
-            if dep_type == 'mrd':
-                val = writer_pcs
-            elif dep_type == 'srd':
-                relations = self.get_cti_relation(dep)
-                val = [(pc, r) for pc, r in zip(writer_pcs, relations)]
+                # Get value (writer pc and cti relation if applicable)
+                writer_pcs =[w['pc'] for w in dep['writers']]
+                if dep_type == 'mrd':
+                    val = writer_pcs
+                elif dep_type == 'srd':
+                    relations = self.get_cti_relation(dep)
+                    val = [(pc, r) for pc, r in zip(writer_pcs, relations)]
 
-            dependencies.update({key:val})
+                dependencies.update({key:val})
 
         return dependencies
 
