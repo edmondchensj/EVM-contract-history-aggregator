@@ -176,7 +176,6 @@ def main():
     with open('result.json','w') as fp:
         json.dump(table, fp)
     """
->>>>>>> Stashed changes
 
 if __name__ == "__main__":
     main()
