@@ -1,6 +1,5 @@
 from pprint import pprint
 import json
-from TraceInfo import TraceInfo
 
 class HistoricalTable(object):
     """
