@@ -88,7 +88,13 @@ class GraphAggregator(object):
     def get_graph(self):
         return self.G
 
-def main(inputs):
+def main():
+
+    inputs = [[1,2,4,5,7,8],
+                [1,3,4,6,7,9],
+                [1,3,4,5,7,8],
+                [1,3,4,10,7,9],
+                [1,3,11,4,10]]
     print('Inputs: ')
     pprint(inputs)
     print('\n')
@@ -101,9 +107,4 @@ def main(inputs):
     pprint(graph)
 
 if __name__ == "__main__":
-    test_inputs = [[1,2,4,5,7,8],
-                [1,3,4,6,7,9],
-                [1,3,4,5,7,8],
-                [1,3,4,10,7,9],
-                [1,3,11,4,10]]
-    main(test_inputs)
+    main()
