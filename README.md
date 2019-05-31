@@ -9,9 +9,10 @@ This repo contains two groups of scripts:
 
 1. Table <br>
 This group aggregates all execution paths ***and*** related memory and storage dependencies that occurred for each contract into a **table** (implemented as a Python dictionary). This is the main database that will be used for detecting anomalies.
-    * makeDatabase.py: Main script
+    * makeDatabase.py: Main script for generating database
     * HistoricalTable.py: Contains class for generating database with paths and dependencies.
-    * TraceInfo.py: Contains helper class for extracting the execution path and dependencies for a given trace. 
+    * TraceInfo.py: Contains helper class for extracting the execution path and dependencies for a given trace.
+    * Detector.py: Main script for testing if a new trace is an anomaly
     
 2. Graph <br>
 This group aggregates all the execution paths (***without*** the memory and storage dependencies) that occurred for each contract into a **directed graph**. This is helpful for analyzing case studies.  
