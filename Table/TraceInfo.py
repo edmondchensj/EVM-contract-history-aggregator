@@ -1,6 +1,6 @@
 import json
 from pprint import pprint
-from tqdm import tqdm # for tracking progress
+
 
 class TraceInfo(object):
 
@@ -24,6 +24,7 @@ class TraceInfo(object):
             return None
 
         full_path = trace['path']
+        address = trace['address']
         subpaths = self.preprocess_with_nonce(full_path) # convert path into multiple no-loop paths
 
         # Initialize output
@@ -35,9 +36,10 @@ class TraceInfo(object):
             # Convert to string for json compatibility later. 
             path_as_list = [path_tuple[1] for path_tuple in path_with_nonce]
             path_key = ', '.join(str(x) for x in path_as_list)
-            path_info = {'path': path_key,
+            path_info = {'address': address,
+                    'path': path_key,
                     'mrd': None,
-                    'srd': None}
+                    'srd': None,}
 
             max_nonce = path_with_nonce[-1][0]    # path is ordered, so we use the final nonce of the path
             final_subpath = (i == (len(subpaths) - 1)) # check if we are on the final subpath
@@ -101,7 +103,7 @@ class TraceInfo(object):
                     val = writer_pcs
                 elif dep_type == 'srd':
                     relations = self.get_cti_relation(dep)
-                    val = [(pc, r) for pc, r in zip(writer_pcs, relations)]
+                    val = [[pc, r] for pc, r in zip(writer_pcs, relations)]
 
                 dependencies.update({key:val})
 
@@ -139,22 +141,30 @@ class TraceInfo(object):
 
         return new_paths
 
-def main():
-    with open('samples/tracelist_withLoops.json', 'r') as f:
-        input_json = json.load(f)
+    def transfer(self, input_json):
+        with open(input_json, 'r') as f:
+            input_json = json.load(f)
+        trace_dict = input_json[0][0]
+        trace_info = self.get_trace_info(trace_dict)
+        return trace_info
 
-    trace_dict = input_json[0][0]
-    print("Trace dict is: ")
-    pprint(trace_dict)
 
-    T = TraceInfo()
+# def main():
+#     with open('samples/tracelist_withLoops.json', 'r') as f:
+#         input_json = json.load(f)
 
-    trace_info = T.get_trace_info(trace_dict)
-    print("\nTrace info is: ")
-    pprint(trace_info)
+#     trace_dict = input_json[0][0]
+#     print("Trace dict is: ")
+#     pprint(trace_dict)
 
-if __name__ == "__main__":
-    main()
+#     T = TraceInfo()
+
+#     trace_info = T.get_trace_info(trace_dict)
+#     print("\nTrace info is: ")
+#     pprint(trace_info)
+
+# if __name__ == "__main__":
+#     main()
 
 
 
