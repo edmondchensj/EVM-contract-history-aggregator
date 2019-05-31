@@ -50,7 +50,7 @@ class TraceInfo(object):
         return trace_info
 
     def get_cti_relation(self, srd):
-        """Copied from HistoricalTable class"""
+        """ Refer to CTI illustration diagram """
         reader_cti = srd['reader']['cti']
         writer_ctis = [w['cti'] for w in srd['writers']]
 
@@ -73,7 +73,7 @@ class TraceInfo(object):
         return relations
 
     def get_dependencies(self, trace, dep_type, max_nonce, final_subpath=False):
-        """ Modified from HistoricalTable class.
+        """ 
         Gets memory-read dependencies (MRD) for a specific subpath (produced by preprocessing looped paths). 
         We assign these dependencies to subpaths using nonces. 
         We assign MRDs when nonce for that MRD is below the "max_nonce" for a subpath, 
