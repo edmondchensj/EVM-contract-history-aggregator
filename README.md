@@ -1,4 +1,4 @@
-# Historical Table and Graph Aggregator for EVM Project 
+# Contract History Aggregator for EVM Project 
 This repo is the final component of the Anomaly-based Detector for Northwestern University's EECS450 Final Project. 
 
 ## Code Execution
@@ -6,19 +6,16 @@ This repo is the final component of the Anomaly-based Detector for Northwestern 
 
 ## Overview 
 This repo contains two groups of scripts:
-1. Historical Table
-    * makeDatabase.py: Main script to generate the Historical-Table database
+1. Table
+This group aggregates all execution paths **and** related memory and storage dependencies that occurred for each contract into a **table** (implemented as a Python dictionary). This is the main database that will be used for detecting anomalies.
+    * makeDatabase.py: Main script
     * HistoricalTable.py: Contains class for generating database with paths and dependencies.
     * TraceInfo.py: Contains helper class for extracting the execution path and dependencies for a given trace. 
-2. Graph Aggregator 
-    * GraphAggregator.py: To aggregate list of paths into a single directed graph
+2. Graph  
+This group aggregates all the execution paths (**without** the memory and storage dependencies) that occurred for each contract into a **directed graph**. This is helpful for analyzing case studies.  
+    * GraphAggregator.py: Contains class for aggregate list of paths into a single directed graph
     * preprocessing.py: To run before GraphAggregator.py for preprocessing input paths
     * visualization.py: To run after GraphAggregator.py for visualizing the graph
-
-The purpose of the historical table is to aggregate important information in all historical traces. It contains the execution paths (in terms of program counters) and the memory and storage read dependencies for each path. With this table, we would be able to detect whether a new execution path is normal or an anomaly. This achieves the big picture goal for the EVM project.
-
-The purpose of graph aggregator is to create a single directed graph per contract such that we obtain a snapshot of all historical execution paths for each contract. This is helpful for analyzing case studies.
-
 
 ## Historical Table (HistoricalTable.py)
 The historical table takes in the output from TraceInfo.py and updates its database.
