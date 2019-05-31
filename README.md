@@ -7,13 +7,13 @@ This repo is the final component of the Anomaly-based Detector for Northwestern 
 ## Overview 
 This repo contains two groups of scripts:
 
-1. Table
+1. Table <br>
 This group aggregates all execution paths **and** related memory and storage dependencies that occurred for each contract into a **table** (implemented as a Python dictionary). This is the main database that will be used for detecting anomalies.
     * makeDatabase.py: Main script
     * HistoricalTable.py: Contains class for generating database with paths and dependencies.
     * TraceInfo.py: Contains helper class for extracting the execution path and dependencies for a given trace. 
     
-2. Graph  
+2. Graph <br>
 This group aggregates all the execution paths (**without** the memory and storage dependencies) that occurred for each contract into a **directed graph**. This is helpful for analyzing case studies.  
     * GraphAggregator.py: Contains class for aggregate list of paths into a single directed graph
     * preprocessing.py: To run before GraphAggregator.py for preprocessing input paths
