@@ -9,7 +9,7 @@ class GraphAggregator(object):
         self.G = dict()
         self.G_backup = dict()
 
-    def make_graph(self, list_of_paths, view_progress=True):
+    def make_graph(self, list_of_paths, view_progress=False):
         """ Make Aggregated Graph from list of execution paths """
 
         for i, path in enumerate(list_of_paths):
@@ -85,8 +85,21 @@ class GraphAggregator(object):
     def has_edge(self, source, dest):
         return (source in self.G and dest in self.G[source])
 
+    def preprocess_constraint(self, constraint):
+        """ Convert constraint values from sets to list to make JSON compatible """
+        for source, dests in constraint.items():
+            constraint[source] = list(dests)
+        return constraint
+
     def get_graph(self):
-        return self.G
+        """ Return graph that is JSON compatible. """
+        graph = self.G.copy()
+        for source, dests in graph.items():
+            for dest in dests:
+                constraint = graph[source][dest]['constraint']
+                new_constraint = self.preprocess_constraint(constraint)
+                graph[source][dest]['constraint'] = new_constraint
+        return graph
 
 def main():
 

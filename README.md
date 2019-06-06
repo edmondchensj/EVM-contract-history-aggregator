@@ -5,52 +5,24 @@ This repo is the final component of the Anomaly-based Detector for Northwestern 
 <img src="examples/code_execution.png" width="60%">
 
 ## Overview 
-This repo contains two groups of scripts:
+This repo contains three groups of scripts:
 
-1. Table <br>
+1. Trace Feature Extractor (TraceInfo.py) <br>
+This script extracts the required features from a given trace. It also expands a trace into several subtraces if the trace is found to have "loops" in its execution path. Used in both makeDatabase.py and makeGraph.py. 
+
+2. Table <br>
 This group aggregates all execution paths ***and*** related memory and storage dependencies that occurred for each contract into a **table** (implemented as a Python dictionary). This is the main database that will be used for detecting anomalies.
-    * makeDatabase.py: Main script for generating database
-    * HistoricalTable.py: Contains class for generating database with paths and dependencies.
-    * TraceInfo.py: Contains helper class for extracting the execution path and dependencies for a given trace.
-    * Detector.py: Main script for testing if a new trace is an anomaly
+    * makeDatabase.py: Wrapper script for generating database
+    * Table/HistoricalTable.py: Contains class for generating database with paths and dependencies.
+    * Table/Detector.py: Main script for testing if a new trace is an anomaly
     
-2. Graph <br>
+3. Graph <br>
 This group aggregates all the execution paths (***without*** the memory and storage dependencies) that occurred for each contract into a **directed graph**. This is helpful for analyzing case studies.  
-    * GraphAggregator.py: Contains class for aggregate list of paths into a single directed graph
-    * preprocessing.py: To run before GraphAggregator.py for preprocessing input paths
-    * visualization.py: To run after GraphAggregator.py for visualizing the graph
+    * makeGraph.py: Wrapper script for generating graph
+    * Graph/GraphAggregator.py: Contains class for aggregate list of paths into a single directed graph
+    * Graph/visualization.py: To run after GraphAggregator.py for visualizing the graph
 
-## Historical Table (HistoricalTable.py)
-The historical table takes in the output from TraceInfo.py and updates its database.
-
-### Format
-Input: Output (list of dict) of TraceInfo.py (see below)
-
-Output: A dict of dicts, where: <br>
-* first level keys are the execution paths as tuples,
-* second level keys are 'mrd' (memory-read-dependencies) or 'srd' (storage-read-dependencies)
-* second level values are the respective reader-writer dependency tables (dicts) for 'mrd' and 'srd'.
-
-### Example
-Input: 
-```
-[{'mrd': {455: [4]}, 
-  'path': '0, 11, 170, 340, 444, 11', 
-  'srd': {}},
- {'mrd': {}, 
- 'path': '0, 11, 558, 199', 
- 'srd': {1296: [(1818, 'self')]}}]
-```
-
-Output: (Single Entry)
-```
-{'0, 11, 170, 340, 444, 11': {'mrd_possibilities': {455: [[4]]},
-                              'srd_possibilities': {}},
- '0, 11, 558, 199': {'mrd_possibilities': {},
-                     'srd_possibilities': {1296: [[(1818, 'self')]]}}}
-```
-
-## Trace Information Extraction (TraceInfo.py)
+## Trace Feature Extractor (TraceInfo.py)
 This is a helper script for extracting the exection path and dependencies for a given trace.
 
 Given a trace, the script extracts the path, preprocesses it to no-loop paths, and assigns dependencies. 
@@ -88,6 +60,36 @@ Output:
  {'mrd': {}, 
  'path': '0, 11, 558, 199', 
  'srd': {1296: [(1818, 'self')]}}]
+```
+
+## Historical Table (HistoricalTable.py)
+The historical table takes in the output from TraceInfo.py and updates its database.
+
+### Format
+Input: Output (list of dict) of TraceInfo.py (see below)
+
+Output: A dict of dicts, where: <br>
+* first level keys are the execution paths as tuples,
+* second level keys are 'mrd' (memory-read-dependencies) or 'srd' (storage-read-dependencies)
+* second level values are the respective reader-writer dependency tables (dicts) for 'mrd' and 'srd'.
+
+### Example
+Input: 
+```
+[{'mrd': {455: [4]}, 
+  'path': '0, 11, 170, 340, 444, 11', 
+  'srd': {}},
+ {'mrd': {}, 
+ 'path': '0, 11, 558, 199', 
+ 'srd': {1296: [(1818, 'self')]}}]
+```
+
+Output: (Single Entry)
+```
+{'0, 11, 170, 340, 444, 11': {'mrd_possibilities': {455: [[4]]},
+                              'srd_possibilities': {}},
+ '0, 11, 558, 199': {'mrd_possibilities': {},
+                     'srd_possibilities': {1296: [[(1818, 'self')]]}}}
 ```
 
 ## Graph Aggregator (GraphAggregator.py)
