@@ -158,8 +158,8 @@ Output:
 <img src="examples/output_2.png" width="50%">
 
 
-## Preprocessing (preprocess.py)
-The algorithm assumes that paths do not contain no-loops. In order to generalize the algorithm to paths with loops, users can run preprocessing script to first "flatten" their input paths. This turns paths with loops into the no-loop versions.
+## Preprocessing (in TraceInfo.py)
+The aggregation algorithms assumes that paths do not contain no-loops. In order to generalize the algorithm to paths with loops, the trace extractor first "flattens" the paths. This turns paths with loops into the no-loop versions.
 
 ### Example
 Input: 
