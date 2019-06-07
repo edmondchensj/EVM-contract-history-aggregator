@@ -20,7 +20,7 @@ This group aggregates all execution paths ***and*** related memory and storage d
 This group aggregates all the execution paths (***without*** the memory and storage dependencies) that occurred for each contract into a **directed graph**. This is helpful for analyzing case studies.  
     * makeGraph.py: Wrapper script for generating graph
     * Graph/GraphAggregator.py: Contains class for aggregate list of paths into a single directed graph
-    * Graph/visualization.py: To run after GraphAggregator.py for visualizing the graph
+    * Graph/visualization.py: Visualizes the generated graph (output of makeGraph)
 
 ## Trace Feature Extractor (TraceInfo.py)
 This is a helper script for extracting the exection path and dependencies for a given trace.
