@@ -72,14 +72,14 @@ def makeGraph(trace_dir, contract_folders=None, verbose=False):
         fn = open(new_file_path, 'w')
         json.dump(graph, fn)
         fn.close()
-        #print(f'\nGraph saved! {skipped_files} files skipped.')
-
     return
 
 def main():
-    test_folders = ['0x2faa316fc4624ec39adc2ef7b5301124cfb68777',
+    host_folder = 'selected_contract_folders'
+    contract_folders = ['0x2faa316fc4624ec39adc2ef7b5301124cfb68777',
                 '0x273930d21e01ee25e4c219b63259d214872220a2']
-    makeGraph('selected_contract_folders', contract_folders=test_folders, verbose=True)
+    
+    makeGraph(host_folder, contract_folders=contract_folders, verbose=True)
 
 if __name__ == "__main__":
     main()
