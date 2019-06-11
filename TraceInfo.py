@@ -145,24 +145,25 @@ class TraceInfo(object):
         trace_dict = input_json[0][0]
         trace_info = self.get_trace_info(trace_dict)
         return trace_info
+"""
+def main():
+    for i in [1,2,3]:
+        with open(f'abnormal_traces/tracelist{i}.json', 'r') as f:
+            input_json = json.load(f)
 
+        trace_dict = input_json[0][0]
+        print("Trace dict is: ")
+        pprint(trace_dict)
 
-# def main():
-#     with open('samples/tracelist_withLoops.json', 'r') as f:
-#         input_json = json.load(f)
+        T = TraceInfo()
 
-#     trace_dict = input_json[0][0]
-#     print("Trace dict is: ")
-#     pprint(trace_dict)
+        trace_info = T.get_trace_info(trace_dict)
+        print("\nTrace info is: ")
+        pprint(trace_info)
+        input("Press Enter to continue. ")
 
-#     T = TraceInfo()
-
-#     trace_info = T.get_trace_info(trace_dict)
-#     print("\nTrace info is: ")
-#     pprint(trace_info)
-
-# if __name__ == "__main__":
-#     main()
-
+if __name__ == "__main__":
+    main()
+"""
 
 

@@ -93,7 +93,7 @@ class GraphAggregator(object):
 
     def get_graph(self):
         """ Return graph that is JSON compatible. """
-        graph = self.G.copy()
+        graph = copy.deepcopy(self.G)
         for source, dests in graph.items():
             for dest in dests:
                 constraint = graph[source][dest]['constraint']
