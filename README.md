@@ -20,23 +20,26 @@ This group aggregates all execution paths ***and*** related memory and storage d
 This group aggregates all the execution paths (***without*** the memory and storage dependencies) that occurred for each contract into a **directed graph**. This is helpful for analyzing case studies.  
     * makeGraph.py: Wrapper script for generating graph -- Warning: This can be slow (20 minutes) for contracts with a huge number of execution paths, due to the use of python deepcopy library in the GraphAggregator class. 
     * Graph/GraphAggregator.py: Contains class for aggregate list of paths into a single directed graph
-    * Graph/visualization.py: Visualizes the generated graph (output of makeGraph)
+    * Graph/visualization.py: Visualizes the generated graph
 
 ## Usage
 ### 1. Generate Aggregated Databases
-```python makeDatabase.py [path/to/directory_of_contracts]```
+```
+python makeDatabase.py [path/to/directory_of_contracts]
+```
 Additional flags can be found by running `python makeDatabase.py --help`.
 
 ### 2. Generate Aggregated Graphs  
-```python makeGraph.py [path/to/directory_of_contracts]```
+```
+python makeGraph.py [path/to/directory_of_contracts]
+```
 Additional flags can be found by running `python makeGraph.py --help`.
 
 ### 3. Visualize Graphs
-```python Graph/visualization.py [path/to/directory_of_contracts]```
+```
+python Graph/visualization.py [path/to/directory_of_contracts]
+```
 Additional flags can be found by running `python Graph/visualization.py --help`.
-
-### Visualize Graphs
-
 
 ## Additional References
 ### Trace Feature Extractor (TraceInfo.py)
