@@ -3,16 +3,19 @@ from TraceInfo import TraceInfo
 import os
 import json
 from pprint import pprint
+import argparse
 
-# for tracking progress
-from tqdm import tqdm
-
-def make_database(trace_dir):
+def make_database(trace_dir, selected_contracts=None, verbose=True):
     """ Populate table using all traces located in trace_dir """
-    contract_folders = [item for item in os.listdir(trace_dir)
-            if os.path.isdir(os.path.join(trace_dir, item))]
+    if selected_contracts is None:
+        selected_contracts = [item for item in os.listdir(trace_dir)
+                if os.path.isdir(os.path.join(trace_dir, item))]
 
-    for address in tqdm(contract_folders, desc='Progress'):
+    for i, address in enumerate(selected_contracts):
+
+        # Progress
+        if verbose:
+            print(f'({i}/{len(selected_contracts)}) Folder: {address}')
 
         # Initialize table
         H = HistoricalTable()
@@ -23,7 +26,12 @@ def make_database(trace_dir):
             if f.endswith('.json')]
 
         # Update table
-        for json_file in tqdm(all_jsons, desc=f'Folder: {address}'):
+        for j, json_file in enumerate(all_jsons):
+
+            # Progress
+            if verbose:
+                print(f'> ({i}/{len(all_jsons)}) Getting traces from {json_file}')
+
             # Ignore creation.json and historical_table.json (if they exist)
             if json_file in ['creation.json', 'historical_table.json']:
                 continue
@@ -32,7 +40,7 @@ def make_database(trace_dir):
             with open(json_file_path) as f:
                 traces = json.load(f)
 
-                for trace in tqdm(traces, desc=f'File: {json_file}'):
+                for trace in traces:
                     # Extract info and store in table
                     T = TraceInfo()
                     trace_info = T.get_trace_info(trace)
@@ -50,8 +58,22 @@ def make_database(trace_dir):
         json.dump(table, fn)
         fn.close()
         
-def main():
-    make_database('trace_samples')
+def main(folder, selected_contracts, verbose):
+    make_database(folder, selected_contracts, verbose)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description='Generate aggregated database for all/selected contracts')
+    parser.add_argument('folder',
+                    help='Path to directory containing contract folders')
+    parser.add_argument('--selected_contracts',
+                    dest='selected_contracts',
+                    default=None,
+                    help='Generate database for selected contract addresses only. Please provide a list of strings. \
+                    If not given, aggregated database will be generated for all contracts in the folder.')
+    parser.add_argument('--quiet',
+                    dest='verbose'
+                    action='store_false',
+                    default=True,
+                    help='Turn off progress status notifications.'
+    main(args.folder, args.selected_contracts, args.verbose)

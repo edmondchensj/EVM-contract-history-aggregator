@@ -3,6 +3,7 @@ from pprint import pprint
 from Graph.GraphAggregator import GraphAggregator
 import json
 import os
+import argparse
 
 def test():
 
@@ -51,13 +52,12 @@ def visualizeGraph(graph, output_fn):
 
     dot.render(output_fn, view=True)  
 
-def main():
-    folder = 'data/abnormal_traces/contract_folders'
-    
-    subfolders = [item for item in os.listdir(folder)
-                if os.path.isdir(os.path.join(folder, item))]
+def main(folder, selected_contracts):    
+    if selected_contracts is None:
+        selected_contracts = [item for item in os.listdir(folder)
+                    if os.path.isdir(os.path.join(folder, item))]
 
-    for subf in subfolders:
+    for subf in selected_contracts:
         subf_path = os.path.join(folder, subf)
         graph_file = os.path.join(subf_path, 'graph.json')
 
@@ -67,7 +67,17 @@ def main():
         visualizeGraph(graph, subf_path+'/graph')
 
 if __name__ == '__main__':
-    main()
+
+    parser = argparse.ArgumentParser(
+        description='Generate aggregated graph of execution paths for all/selected contracts')
+    parser.add_argument('folder',
+                    help='Path to directory containing contract folders')
+    parser.add_argument('--selected_contracts',
+                    dest='selected_contracts',
+                    default=None,
+                    help='Visualize graph for selected contract addresses only. Please provide a list of strings. \
+                    If not given, aggregated graphs will be generated for all contracts in the folder.')
+    main(folder, selected_contracts)
 
 
 

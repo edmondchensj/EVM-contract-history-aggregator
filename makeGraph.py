@@ -3,19 +3,24 @@ from TraceInfo import TraceInfo
 import os
 import json
 from pprint import pprint
+import argparse
 
 # for tracking progress
 from tqdm import tqdm
 
-def makeGraph(trace_dir, contract_folders=None, verbose=False):
+def makeGraph(trace_dir, selected_contracts=None, verbose=True):
     """ Create json file representing directed, aggregated graph 
         of all execution paths in a contract folder. """
-    if contract_folders is None:
-        contract_folders = [item for item in os.listdir(trace_dir)
+    if selected_contracts is None:
+        selected_contracts = [item for item in os.listdir(trace_dir)
                 if os.path.isdir(os.path.join(trace_dir, item))]
     graph_filename = "graph.json"
 
-    for address in tqdm(contract_folders, desc='Progress'):
+    for address in selected_contracts:
+
+        # Progress
+        if verbose:
+            print(f'({i}/{len(selected_contracts)}) Folder: {address}')
 
         # Initialize graph and input list of all execution paths 
         G = GraphAggregator()
@@ -30,6 +35,11 @@ def makeGraph(trace_dir, contract_folders=None, verbose=False):
             print(f'Now in Folder: {address}')
         # Collect execution paths
         for json_file in all_jsons:
+
+            # Progress
+            if verbose:
+                print(f'> ({i}/{len(all_jsons)}) Getting traces from {json_file}')
+
             # Ignore json files that are not integers
             filename = json_file.split('.json')[0]
             if not str.isdigit(filename):
@@ -74,12 +84,23 @@ def makeGraph(trace_dir, contract_folders=None, verbose=False):
         fn.close()
     return
 
-def main():
-    host_folder = 'selected_contract_folders'
-    contract_folders = ['0x2faa316fc4624ec39adc2ef7b5301124cfb68777',
-                '0x273930d21e01ee25e4c219b63259d214872220a2']
+def main(folder, selected_contracts, verbose):
     
-    makeGraph(host_folder, contract_folders=contract_folders, verbose=True)
+    makeGraph(folder, selected_contracts, verbose)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description='Generate aggregated graph of execution paths for all/selected contracts')
+    parser.add_argument('folder',
+                    help='Path to directory containing contract folders')
+    parser.add_argument('--selected_contracts',
+                    dest='selected_contracts',
+                    default=None,
+                    help='Generate graph for selected contract addresses only. Please provide a list of strings. \
+                    If not given, aggregated graphs will be generated for all contracts in the folder.')
+    parser.add_argument('--quiet',
+                    dest='verbose'
+                    action='store_false',
+                    default=True,
+                    help='Turn off progress status notifications.'
+    main(args.folder, args.selected_contracts, args.verbose)
