@@ -96,11 +96,11 @@ if __name__ == "__main__":
     parser.add_argument('--selected_contracts',
                     dest='selected_contracts',
                     default=None,
-                    help='Generate graph for selected contract addresses only. Please provide a list of strings. \
-                    If not given, aggregated graphs will be generated for all contracts in the folder.')
+                    help='Generate graph for selected contract addresses only. Please provide a list of strings.')
     parser.add_argument('--quiet',
-                    dest='verbose'
+                    dest='verbose',
                     action='store_false',
                     default=True,
-                    help='Turn off progress status notifications.'
+                    help='Turn off progress status notifications.')
+    args = parser.parse_args()
     main(args.folder, args.selected_contracts, args.verbose)

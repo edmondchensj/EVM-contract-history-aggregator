@@ -77,6 +77,7 @@ if __name__ == '__main__':
                     default=None,
                     help='Visualize graph for selected contract addresses only. Please provide a list of strings. \
                     If not given, aggregated graphs will be generated for all contracts in the folder.')
+    args = parser.parse_args()
     main(folder, selected_contracts)
 
 
